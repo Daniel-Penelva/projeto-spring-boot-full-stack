@@ -51,3 +51,58 @@ Aqui estão alguns dos principais métodos e funcionalidades oferecidos pela cla
 A classe `Arrays` fornece uma série de utilitários para tornar o trabalho com arrays mais eficiente e conveniente. Ela é parte do pacote `java.util` e não 
 precisa ser importada explicitamente, já que faz parte das classes padrão do Java.
 
+----------------------------------------------------------------------------- // -----------------------------------------------------------------------------
+Associação Muitos para Muitos entre Categoria e Produto
+
+(name = "<nome_da_tabela>", JoinColumns(@JoinColumn(name="<nome_da_chave_estrangeira_do_produto>"),
+inverseJoinColumns = @JoinColumn(name="<nome_da_chave_estrangeira_da_categoria>"))
+
+O trecho de código está utilizando a anotação `@JoinTable` para mapear uma associação muitos-para-muitos entre duas entidades em um banco de dados usando o 
+framework de persistência JPA (Java Persistence API), como o Hibernate.
+
+Vou explicar cada parte do código:
+
+```java
+@JoinTable(name = "PRODUTO_CATEGORIA", 
+    joinColumns = @JoinColumn(name="produto_id"), 
+    inverseJoinColumns = @JoinColumn(name="categoria_id"))
+private List<Categoria> categorias = new ArrayList<>();
+```
+
+1. `@JoinTable(name = "PRODUTO_CATEGORIA", ...)`:
+   - A anotação `@JoinTable` é usada para especificar que uma tabela intermediária será criada para representar a relação muitos-para-muitos entre as entidades.
+   - `name = "PRODUTO_CATEGORIA"`: Define o nome da tabela intermediária no banco de dados que irá mapear a relação entre os produtos e categorias.
+
+2. `joinColumns = @JoinColumn(name="produto_id")`:
+   - `joinColumns` é uma propriedade de `@JoinTable` que especifica a coluna da tabela intermediária que mapeia a chave estrangeira da entidade principal 
+      (neste caso, a entidade `Produto`).
+   - `@JoinColumn(name="produto_id")`: Define o nome da coluna na tabela intermediária que armazenará as chaves estrangeiras relacionadas aos produtos.
+
+3. `inverseJoinColumns = @JoinColumn(name="categoria_id")`:
+   - `inverseJoinColumns` é outra propriedade de `@JoinTable` que especifica a coluna da tabela intermediária que mapeia a chave estrangeira da entidade 
+      associada (neste caso, a entidade `Categoria`).
+   - `@JoinColumn(name="categoria_id")`: Define o nome da coluna na tabela intermediária que armazenará as chaves estrangeiras relacionadas às categorias.
+
+4. `private List<Categoria> categorias = new ArrayList<>();`:
+   - Isso declara uma lista de objetos do tipo `Categoria`, que é a entidade associada à entidade `Produto` na relação muitos-para-muitos.
+   - Essa lista representa as categorias às quais um produto pode estar associado.
+
+No geral, esse código está mapeando uma relação muitos-para-muitos entre a entidade `Produto` e a entidade `Categoria` por meio de uma tabela intermediária 
+chamada "PRODUTO_CATEGORIA". Essa tabela terá colunas para armazenar as chaves estrangeiras de produtos e categorias, permitindo que você associe vários 
+produtos a várias categorias e vice-versa. A anotação `@JoinTable` é uma parte importante do mapeamento de associações complexas no JPA/Hibernate.
+
+
+Já para a outra associação:
+
+@ManyToMany(mappedBy = "categorias")
+private List<Produto> produtos = new ArrayList<>();
+
+mappedBy = "categorias": Essa é uma propriedade de @ManyToMany que especifica o nome da propriedade na entidade Produto que mapeia a associação reversa 
+(a partir da perspectiva da entidade Produto). Isso significa que a associação foi mapeada na entidade Produto usando a propriedade categorias. Ou seja, 
+A anotação @ManyToMany indica que essa relação existe, e a propriedade mappedBy especifica que a associação foi definida na entidade Produto usando a 
+propriedade categorias.
+
+Essa configuração permite que você acesse os produtos associados a uma categoria diretamente através da lista produtos na entidade de categoria. Além disso, 
+a associação também estará refletida no lado oposto, ou seja, na lista de categorias na entidade Produto. Isso permite que você navegue facilmente entre as 
+entidades relacionadas em ambas as direções da associação.
+
