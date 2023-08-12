@@ -1,0 +1,53 @@
+interface CommandLineRunner
+
+A interface CommandLineRunner é uma interface fornecida pelo Spring Boot que permite executar código específico quando a aplicação é iniciada a partir da 
+linha de comando. Ela faz parte do módulo Spring Boot e é frequentemente usada para executar tarefas de inicialização, configuração ou qualquer outra lógica 
+que você queira que seja executada assim que a aplicação seja iniciada.
+
+A interface CommandLineRunner possui um único método chamado run, que é implementado pela sua aplicação. O método run é chamado automaticamente pelo Spring 
+Boot após o contexto da aplicação ter sido totalmente carregado, permitindo que você execute lógica personalizada.
+
+args: É uma matriz de argumentos que podem ser passados ​​da linha de comando quando a aplicação é iniciada. Isso permite que você passe informações específicas 
+para a lógica de inicialização, se necessário.
+
+A interface CommandLineRunner é útil quando você precisa executar tarefas de inicialização, como preenchimento de dados iniciais no banco de dados, 
+configurações específicas ou qualquer outra lógica que deve ser executada assim que a aplicação iniciar.
+
+----------------------------------------------------------------------------- // -----------------------------------------------------------------------------
+
+A classe `java.util.Arrays` é uma classe utilitária fornecida pelo Java para trabalhar com arrays (matrizes) de tipos primitivos ou objetos. Ela oferece 
+diversos métodos estáticos para realizar várias operações em arrays, como ordenação, pesquisa, comparação e manipulação.
+
+Aqui estão alguns dos principais métodos e funcionalidades oferecidos pela classe `Arrays`:
+
+1. **Ordenação de Arrays**:
+   - `sort(T[] a)`: Ordena um array de objetos comparáveis em ordem crescente.
+   - `sort(T[] a, Comparator<? super T> c)`: Ordena um array usando um comparador personalizado.
+
+2. **Pesquisa em Arrays**:
+   - `binarySearch(T[] a, T key)`: Realiza uma pesquisa binária em um array ordenado e retorna o índice do elemento encontrado ou um valor negativo se não 
+                                   for encontrado.
+   - `binarySearch(T[] a, int fromIndex, int toIndex, T key)`: Realiza uma pesquisa binária em um subarray especificado.
+
+3. **Preenchimento de Arrays**:
+   - `fill(T[] a, T val)`: Preenche todo o array com um valor específico.
+   - `fill(T[] a, int fromIndex, int toIndex, T val)`: Preenche um subarray específico com um valor.
+
+4. **Comparação de Arrays**:
+   - `equals(T[] a, T[] a2)`: Verifica se dois arrays são iguais, ou seja, possuem os mesmos elementos na mesma ordem.
+   - `deepEquals(Object[] a1, Object[] a2)`: Verifica a igualdade profunda de arrays, considerando arrays aninhados.
+
+5. **Conversão de Arrays para String**:
+   - `toString(T[] a)`: Converte um array em uma string formatada.
+
+6. **Cópia de Arrays**:
+   - `copyOf(T[] original, int newLength)`: Cria uma cópia de um array com um novo tamanho.
+   - `copyOfRange(T[] original, int from, int to)`: Cria uma cópia de um subarray dentro de um novo array.
+
+7. **Manipulação de Arrays**:
+   - `asList(T... a)`: Converte um array em uma lista do tipo `List<T>`.
+   - `stream(T[] array)`: Cria um fluxo (stream) a partir de um array, útil para operações de stream.
+
+A classe `Arrays` fornece uma série de utilitários para tornar o trabalho com arrays mais eficiente e conveniente. Ela é parte do pacote `java.util` e não 
+precisa ser importada explicitamente, já que faz parte das classes padrão do Java.
+
