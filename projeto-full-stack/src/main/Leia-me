@@ -106,3 +106,107 @@ Essa configuração permite que você acesse os produtos associados a uma catego
 a associação também estará refletida no lado oposto, ou seja, na lista de categorias na entidade Produto. Isso permite que você navegue facilmente entre as 
 entidades relacionadas em ambas as direções da associação.
 
+----------------------------------------------------------------------------- // -----------------------------------------------------------------------------
+
+Anotação @JsonManagedReference
+
+A anotação @JsonManagedReference é uma anotação fornecida pela biblioteca Jackson, que é amplamente usada para realizar a serialização e desserialização de 
+objetos Java para formatos como JSON. Essa anotação é usada para gerenciar a serialização de associações bidirecionais entre objetos, permitindo que você 
+especifique como as propriedades de um lado da relação devem ser serializadas.
+
+Quando você tem uma relação bidirecional entre objetos, como um relacionamento pai-filho ou muitos-para-muitos, o Jackson normalmente serializa ambos os 
+lados da relação. Isso pode levar a um loop infinito de serialização, onde um objeto A referencia um objeto B, e o objeto B referencia novamente o objeto A, 
+e assim por diante.
+
+A anotação @JsonManagedReference é usada para lidar com a parte "gerenciada" da relação, ou seja, a extremidade que controla a relação e a propriedade 
+associada. Ela funciona em conjunto com a anotação @JsonBackReference, que é usada na extremidade oposta da relação para indicar que essa extremidade é a 
+parte "de volta" da relação.
+
+A anotação @JsonManagedReference trabalha em conjunto com @JsonBackReference para controlar a serialização das associações bidirecionais, evitando loops 
+infinitos e garantindo que as propriedades relevantes sejam incluídas ou excluídas do JSON, conforme necessário.
+
+---------- // ----------
+
+Anotação @JsonBackReference
+
+A anotação @JsonBackReference é uma anotação fornecida pela biblioteca Jackson, que é amplamente utilizada no ecossistema Java para realizar a serialização 
+e desserialização de objetos Java para formatos como JSON. Essa anotação é usada para controlar a serialização de associações bidirecionais entre objetos, a
+fim de evitar loops infinitos de serialização.
+
+Quando você tem uma relação bidirecional entre objetos, como um relacionamento pai-filho ou muitos-para-muitos, o Jackson normalmente serializa ambos os 
+lados da relação. Isso pode levar a um loop infinito de serialização, onde um objeto A referencia um objeto B, e o objeto B referencia novamente o objeto A, 
+e assim por diante.
+
+Para evitar esse loop de serialização, você pode usar a anotação @JsonBackReference em uma das extremidades da associação bidirecional. Quando um objeto é 
+serializado e contém a anotação @JsonBackReference, o Jackson não incluirá essa propriedade no JSON resultante. Isso significa que a propriedade não será 
+serializada, evitando o loop infinito.
+
+É importante notar que a anotação @JsonBackReference deve ser usada com cuidado, especialmente se você precisar desserializar o JSON de volta para objetos 
+Java, pois a propriedade marcada com @JsonBackReference não será reconstruída durante a desserialização. Se a desserialização for necessária, você pode 
+considerar usar a anotação @JsonManagedReference no lado oposto da associação.
+
+---------- // ----------
+
+Anotação @ControllerAdvice
+
+A anotação @ControllerAdvice é uma característica do Spring Framework que permite centralizar o tratamento de exceções e a aplicação de configurações 
+globais para todos os controladores em uma aplicação Spring MVC. Ela é usada para criar classes que atuam como conselheiros (advisors) globais para 
+controladores, permitindo a personalização de comportamentos que afetam todos os controladores.
+
+Aqui estão alguns cenários em que @ControllerAdvice é útil:
+
+Tratamento de Exceções Globais: Você pode usar @ControllerAdvice para criar métodos que manipulam exceções específicas em todos os controladores da 
+                                aplicação. Isso centraliza a lógica de tratamento de exceções em um local.
+
+Inicialização Global de Dados: Você pode usar @ControllerAdvice para pré-preencher modelos ou atributos que devem estar presentes em todas as respostas 
+                               geradas pelos controladores.
+
+Configurações de Ligação de Dados: Se você estiver usando o mecanismo de Data Binding (como @ModelAttribute ou @RequestParam), pode definir conversores e 
+                                   formatadores personalizados de maneira global.
+                                   
+Portanto, a anotação @ControllerAdvice permite centralizar e modularizar o tratamento de exceções, a configuração de modelos e outras funcionalidades que 
+podem afetar todos os controladores da sua aplicação Spring MVC. Isso simplifica o código e torna a manutenção mais eficiente.         
+
+---------- // ----------
+
+Anotação @ExceptionHandler
+
+A anotação @ExceptionHandler é usada em métodos dentro de classes anotadas com @ControllerAdvice para tratar exceções lançadas por métodos em controladores 
+(classes anotadas com @Controller) dentro de uma aplicação Spring MVC.
+
+Quando um método em um controlador lança uma exceção, o Spring MVC procura por métodos anotados com @ExceptionHandler nas classes anotadas com 
+@ControllerAdvice para tratar essa exceção específica. Isso permite centralizar o tratamento de exceções e personalizar a resposta apropriada para diferentes 
+tipos de exceções.
+
+Ao usar a anotação @ExceptionHandler, você pode personalizar o tratamento de exceções de maneira centralizada e oferecer respostas mais significativas e 
+apropriadas aos clientes da sua aplicação. Isso ajuda a melhorar a experiência do usuário em caso de erros e facilita a manutenção do código.
+
+---------- // ----------
+O método abaixo é um método de tratamento de exceção em um controlador Spring. Esse método é responsável por tratar exceções do tipo 
+`ObjectNotFoundException` e retornar uma resposta personalizada com informações de erro. Vou explicar cada parte desse método:
+
+```
+public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e, 
+        HttpServletRequest request) {
+    
+    StandardError standardError = new StandardError(HttpStatus.NOT_FOUND.value(), 
+            e.getMessage(), System.currentTimeMillis());
+    
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);
+}
+```
+
+1. `public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e, HttpServletRequest request)`: Este é um método público que recebe dois 
+parâmetros: uma exceção do tipo `ObjectNotFoundException` e um objeto `HttpServletRequest` que representa a solicitação HTTP atual.
+
+2. `StandardError standardError = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());`: Aqui, é criado um objeto 
+`StandardError`, que é uma classe personalizada para representar erros padronizados. Ele recebe três argumentos: o status HTTP 404 (NOT_FOUND), a mensagem 
+de erro da exceção `ObjectNotFoundException` e o horário atual em milissegundos.
+
+3. `return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);`: O método retorna uma instância de `ResponseEntity` configurada com o status 
+HTTP 404 (NOT_FOUND) e o corpo sendo o objeto `standardError`. Isso significa que, quando essa exceção for tratada, o cliente receberá uma resposta HTTP 
+com o status 404 e o corpo contendo as informações de erro encapsuladas no objeto `StandardError`.
+
+Em resumo, esse método é um tratador de exceções específico para o caso em que uma exceção `ObjectNotFoundException` é lançada. Ele encapsula a exceção em 
+um objeto `StandardError` personalizado e retorna uma resposta HTTP com o status 404 e as informações de erro no corpo. Isso é útil para fornecer 
+informações claras sobre o erro ao cliente que fez a solicitação, melhorando a experiência do usuário em caso de não encontrar um objeto específico.
