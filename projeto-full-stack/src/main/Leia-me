@@ -210,3 +210,85 @@ com o status 404 e o corpo contendo as informações de erro encapsuladas no obj
 Em resumo, esse método é um tratador de exceções específico para o caso em que uma exceção `ObjectNotFoundException` é lançada. Ele encapsula a exceção em 
 um objeto `StandardError` personalizado e retorna uma resposta HTTP com o status 404 e as informações de erro no corpo. Isso é útil para fornecer 
 informações claras sobre o erro ao cliente que fez a solicitação, melhorando a experiência do usuário em caso de não encontrar um objeto específico.
+
+----------------------------------------------------------------------------- // -----------------------------------------------------------------------------
+Detalhando o código:
+
+private Set<String> telefones = new HashSet<>();
+
+O script declara uma variável chamada `telefones` do tipo `Set<String>`, inicializando-a com uma instância da classe `HashSet<String>`. 
+Vou explicar cada parte desse script:
+
+
+1. `private`: Isso define o modificador de acesso da variável como privado. Isso significa que a variável `telefones` só pode ser acessada dentro da classe 
+onde foi declarada.
+
+2. `Set<String>`: Isso declara o tipo da variável como um conjunto (set) que armazena elementos do tipo `String`. Um conjunto é uma coleção que não permite 
+duplicatas, ou seja, não pode conter o mesmo elemento mais de uma vez.
+
+3. `telefones`: Este é o nome da variável.
+
+4. `= new HashSet<>();`: Aqui, a variável `telefones` é inicializada com uma nova instância da classe `HashSet<String>`. O `HashSet` é uma implementação da 
+interface `Set` que armazena os elementos de forma não ordenada e não permite elementos duplicados.
+
+Portanto, a variável `telefones` é um conjunto que armazena valores do tipo `String`. É comum usar conjuntos para armazenar coleções de valores únicos, como 
+números de telefone, endereços de e-mail ou outras informações que não devem ser repetidas. O uso de um conjunto garante que os números de telefone sejam 
+únicos, não permitindo duplicatas.
+
+---------- // ----------
+Anotação `@ElementCollection`
+
+A anotação `@ElementCollection` é uma anotação fornecida pelo framework JPA (Java Persistence API) que é usada para mapear coleções de valores básicos 
+(primitivos, tipos embutidos ou tipos enumerados) como parte de uma entidade. Isso permite que você armazene várias instâncias de um determinado tipo 
+diretamente na tabela associada à entidade principal.
+
+Aqui estão os principais pontos para entender sobre a anotação `@ElementCollection`:
+
+1. **Uso em coleções de valores básicos**: A anotação `@ElementCollection` é usada para mapear uma coleção de valores simples, como strings, números, datas, 
+enumerações ou até mesmo tipos embutidos, em uma tabela separada associada à entidade principal.
+
+2. **Criação de tabela auxiliar**: Ao usar `@ElementCollection`, o JPA cria automaticamente uma tabela auxiliar para armazenar os elementos da coleção. Essa 
+tabela auxiliar terá uma coluna para armazenar o valor e, opcionalmente, outras colunas para armazenar chaves estrangeiras que vinculam a coleção à entidade 
+principal.
+
+3. **Associação à entidade principal**: Através da anotação `@ElementCollection`, a coleção é associada à entidade principal sem a necessidade de criar uma 
+nova classe de entidade para representar a coleção.
+
+4. **Flexibilidade na modelagem**: `@ElementCollection` é uma maneira eficaz de modelar atributos complexos que não justificam a criação de uma entidade 
+separada. Por exemplo, se uma entidade tiver uma lista de endereços ou números de telefone, isso pode ser representado usando `@ElementCollection`.
+
+Em resumo, a anotação `@ElementCollection` é usada para mapear coleções de valores básicos em uma entidade JPA, criando tabelas auxiliares automaticamente 
+para armazenar esses valores associados à entidade principal. Isso é útil para modelar atributos complexos e repetitivos sem a necessidade de criar entidades 
+separadas.
+
+---------- // ----------
+
+Anotação @CollectionTable
+
+A anotação @CollectionTable é uma anotação fornecida pelo framework JPA (Java Persistence API) que é usada em conjunto com a anotação @ElementCollection. 
+Ela é usada para personalizar a tabela auxiliar criada quando você deseja mapear uma coleção de valores básicos usando a anotação @ElementCollection. A 
+anotação @CollectionTable permite que você especifique detalhes sobre a tabela auxiliar que será criada para armazenar os elementos da coleção.
+
+---------- // ----------
+
+Explicando a codificação:
+
+```
+@ElementCollection
+@CollectionTable(name = "TELEFONE")
+private Set<String> telefones = new HashSet<>();
+
+```
+1. @ElementCollection: Essa anotação é usada para indicar que a variável telefones representa uma coleção de elementos, que nesse caso são valores básicos 
+(no caso, strings). Isso informa ao JPA para criar uma tabela auxiliar para armazenar esses valores.
+
+2. @CollectionTable(name = "TELEFONE"): Essa anotação é usada para personalizar a tabela auxiliar que será criada para armazenar os elementos da coleção 
+telefones. O atributo name especifica o nome da tabela auxiliar como "TELEFONE".
+
+3. private Set<String> telefones = new HashSet<>();: Aqui, estamos declarando uma variável chamada telefones do tipo Set<String>, que representa uma coleção 
+de valores de telefone (strings). A variável é inicializada com uma instância vazia de HashSet<>.
+
+No geral, esse trecho de código é usado para criar uma tabela auxiliar chamada "TELEFONE" que armazenará os valores de telefone de uma entidade. A coleção 
+de telefones é representada pela variável telefones e é mapeada como parte da entidade usando @ElementCollection e @CollectionTable. Isso é útil para 
+representar uma relação de composição entre uma entidade principal e seus telefones associados.
+
