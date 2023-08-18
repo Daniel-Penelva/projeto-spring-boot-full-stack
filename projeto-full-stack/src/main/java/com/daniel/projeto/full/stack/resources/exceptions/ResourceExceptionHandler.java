@@ -11,14 +11,12 @@ import com.daniel.projeto.full.stack.services.exceptions.ObjectNotFoundException
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
-	
 	@ExceptionHandler(ObjectNotFoundException.class)
-	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e, 
-			HttpServletRequest request){
-		
-		StandardError standardError = new StandardError(HttpStatus.NOT_FOUND.value(), 
-				e.getMessage(), System.currentTimeMillis());
-		
+	public ResponseEntity<StandardError> objectNotFound(ObjectNotFoundException e, HttpServletRequest request) {
+
+		StandardError standardError = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(),
+				System.currentTimeMillis());
+
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(standardError);
 	}
 }
