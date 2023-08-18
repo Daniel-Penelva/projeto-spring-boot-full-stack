@@ -2,8 +2,10 @@ package com.daniel.projeto.full.stack.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,6 +36,21 @@ public class Produto implements Serializable {
 	joinColumns = @JoinColumn(name="produto_id"), 
 	inverseJoinColumns = @JoinColumn(name="categoria_id"))
 	private List<Categoria> categorias = new ArrayList<>();
+	
+	
+	// Coleção que não permite duplicatas e o HashSet é uma implementação da interface
+	// Set que armazena os elementos de forma não ordenada e não permite elementos duplicados.
+	private Set<ItemPedido> itensPedido = new HashSet<ItemPedido>();
+	
+	
+	public List<Pedido> getPedidos(){
+		List<Pedido> lista = new ArrayList<Pedido>();
+		
+		for(ItemPedido itens: itensPedido) {
+			lista.add(itens.getPedido());
+		}
+		return lista;
+	}
 	
 	public Produto() {
 	
@@ -76,6 +93,14 @@ public class Produto implements Serializable {
 
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
+	}
+	
+	public Set<ItemPedido> getItens() {
+		return itensPedido;
+	}
+
+	public void setItens(Set<ItemPedido> itensPedido) {
+		this.itensPedido = itensPedido;
 	}
 
 	@Override

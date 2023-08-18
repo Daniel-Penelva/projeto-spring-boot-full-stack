@@ -400,3 +400,43 @@ tabela no banco de dados.
 Em resumo, a anotação `@Inheritance` é usada para definir a estratégia de herança a ser usada em hierarquias de classes quando essas classes são mapeadas 
 para tabelas no banco de dados. Ela permite escolher entre diferentes estratégias, como Single Table Inheritance ou Joined Table Inheritance, para 
 representar a herança no esquema do banco de dados.
+
+----------------------------------------------------------------------------- // -----------------------------------------------------------------------------
+
+Anotação @Embeddable
+
+A anotação `@Embeddable` é uma anotação fornecida pelo framework JPA (Java Persistence API) que é usada para indicar que uma classe deve ser usada como um 
+componente embutido em outra classe de entidade. Essa anotação é geralmente usada para criar tipos embutidos, onde os atributos de uma classe são mapeados 
+diretamente como colunas na tabela da entidade que a contém.
+
+Aqui estão os principais pontos para entender sobre a anotação `@Embeddable`:
+
+1. **Criação de tipos embutidos**: A anotação `@Embeddable` é usada para criar tipos de objetos que serão embutidos em outras entidades. Esses tipos não 
+   possuem uma identidade própria no banco de dados e são armazenados diretamente nas colunas da tabela da entidade principal.
+
+2. **Uso em atributos de entidades**: A classe anotada com `@Embeddable` é usada como um tipo de atributo em uma classe de entidade. Os atributos da classe 
+   embutida são mapeados diretamente como colunas da tabela da entidade que a contém.
+
+3. **Reutilização de componentes**: O uso de `@Embeddable` permite a reutilização de componentes de dados em várias entidades, melhorando a modularidade e 
+   reduzindo a repetição de código.
+
+Em resumo, a anotação `@Embeddable` é usada para criar tipos embutidos que são mapeados como atributos nas tabelas das entidades que os contêm. Isso ajuda a 
+modularizar o código, reutilizar componentes de dados e simplificar o mapeamento de atributos complexos.
+
+---------- // ----------
+
+Analisando o código:
+
+private Set<ItemPedido> itens = new HashSet<ItemPedido>();
+
+1. Set<ItemPedido>: Isso declara o tipo da variável como um conjunto (Set) que armazena elementos do tipo ItemPedido. Um conjunto é uma coleção que não permite 
+   duplicatas, ou seja, não pode conter o mesmo elemento mais de uma vez.
+
+
+2. = new HashSet<ItemPedido>();: Aqui, a variável itens é inicializada com uma nova instância da classe HashSet<ItemPedido>. O HashSet é uma implementação 
+   da interface Set que armazena os elementos de forma não ordenada e não permite elementos duplicados.
+
+Portanto, a variável itens é um conjunto que armazena objetos do tipo ItemPedido. O uso de um conjunto garante que cada item de pedido seja único, evitando 
+a duplicação de itens no conjunto. Isso é útil, por exemplo, quando você está trabalhando com uma lista de itens de pedido em um sistema de comércio 
+eletrônico, onde cada item de pedido deve ser único.
+

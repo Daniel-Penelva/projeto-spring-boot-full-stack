@@ -2,7 +2,9 @@ package com.daniel.projeto.full.stack.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -34,6 +36,11 @@ public class Pedido implements Serializable {
 	@ManyToOne()
 	@JoinColumn(name = "endereco_de_entrega_id")
 	private Endereco enderecoDeEntrega;
+
+	// Coleção que não permite duplicatas e o HashSet é uma implementação da
+	// interface Set que armazena os elementos de forma não ordenada e não permite
+	// elementos duplicados.
+	private Set<ItemPedido> itens = new HashSet<ItemPedido>();
 
 	public Pedido() {
 
@@ -86,6 +93,14 @@ public class Pedido implements Serializable {
 	public void setEnderecoDeEntrega(Endereco enderecoDeEntrega) {
 		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
+	
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
 
 	@Override
 	public int hashCode() {
@@ -104,4 +119,5 @@ public class Pedido implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
+	
 }
