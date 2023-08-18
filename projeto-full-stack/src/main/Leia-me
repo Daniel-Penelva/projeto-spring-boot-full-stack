@@ -292,3 +292,54 @@ No geral, esse trecho de código é usado para criar uma tabela auxiliar chamada
 de telefones é representada pela variável telefones e é mapeada como parte da entidade usando @ElementCollection e @CollectionTable. Isso é útil para 
 representar uma relação de composição entre uma entidade principal e seus telefones associados.
 
+----------------------------------------------------------------------------- // -----------------------------------------------------------------------------
+
+Anotação @MapsId
+
+A anotação `@MapsId` é uma anotação fornecida pelo framework JPA (Java Persistence API) que é usada para mapear o atributo de uma entidade como parte da 
+chave primária (primary key) de outra entidade associada. Essa anotação é comumente usada para mapear um relacionamento um-para-um (one-to-one) onde a 
+chave primária da entidade associada também é a chave primária da entidade principal.
+
+Aqui estão os principais pontos para entender sobre a anotação `@MapsId`:
+
+1. **Uso com relacionamentos um-para-um**: A anotação `@MapsId` é usada em uma propriedade que representa um relacionamento um-para-um, onde a chave 
+   primária da entidade associada é usada como chave primária da entidade principal.
+
+2. **Evita a duplicação de chave primária**: O uso de `@MapsId` permite que você evite duplicar a chave primária da entidade associada na entidade principal, 
+   o que pode ser útil em cenários onde a entidade associada deve ser referenciada através da mesma chave primária da entidade principal.
+
+3. **Economiza espaço de armazenamento**: Ao mapear o atributo como parte da chave primária, você economiza espaço de armazenamento, pois não precisa 
+   duplicar a mesma informação em ambas as entidades.
+
+Aqui está um exemplo simples de uso da anotação `@MapsId`:
+
+```
+@Entity
+public class Usuario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne
+    @MapsId
+    private DetalhesUsuario detalhes;
+    
+    // outros atributos, getters e setters
+}
+
+@Entity
+public class DetalhesUsuario {
+    @Id
+    private Long id;
+
+    // outros atributos, getters e setters
+}
+```
+
+Neste exemplo, a classe `Usuario` possui um relacionamento um-para-um com a classe `DetalhesUsuario`. A anotação `@MapsId` é usada no relacionamento, 
+indicando que a chave primária da classe `Usuario` é mapeada para a chave primária da classe `DetalhesUsuario`. Isso significa que o mesmo valor da chave 
+primária será usado para ambas as tabelas, evitando duplicações e economizando espaço.
+
+Em resumo, a anotação `@MapsId` é usada para mapear um atributo como parte da chave primária de outra entidade associada. Ela é útil para evitar duplicações 
+de chave primária e economizar espaço de armazenamento em cenários de relacionamento um-para-um.
+
