@@ -343,3 +343,60 @@ primária será usado para ambas as tabelas, evitando duplicações e economizan
 Em resumo, a anotação `@MapsId` é usada para mapear um atributo como parte da chave primária de outra entidade associada. Ela é útil para evitar duplicações 
 de chave primária e economizar espaço de armazenamento em cenários de relacionamento um-para-um.
 
+---------- // ----------
+
+Anotação @Inheritance
+
+A anotação `@Inheritance` é uma anotação fornecida pelo framework JPA (Java Persistence API) que é usada para definir a estratégia de herança a ser usada em 
+hierarquias de classes quando essas classes são mapeadas para tabelas em um banco de dados relacional.
+
+A herança em JPA refere-se à situação em que uma hierarquia de classes (uma classe pai e suas subclasses) é mapeada para tabelas em um banco de dados. A 
+anotação `@Inheritance` é usada para definir como essa hierarquia de classes será representada no banco de dados.
+
+Existem duas estratégias principais de herança suportadas pela anotação `@Inheritance`:
+
+1. **Single Table Inheritance (herança em uma única tabela)**: Nessa estratégia, todas as classes na hierarquia (classe pai e subclasses) são mapeadas para 
+   a mesma tabela. A tabela contém colunas para todos os atributos das classes envolvidas, e uma coluna adicional é usada para identificar qual classe cada 
+   linha representa. A única tabela é recomendada para casos onde possuem poucos atributos definidos nas subclasses, para não ficar uma tabela muito grande.
+
+2. **Joined Table Inheritance (herança em tabelas separadas)**: Nessa estratégia, cada classe na hierarquia é mapeada para uma tabela separada no banco de 
+   dados. A tabela da classe pai contém os atributos comuns a todas as classes, enquanto as tabelas das subclasses contêm os atributos específicos de cada 
+   classe. Chaves estrangeiras são usadas para estabelecer as relações entre as tabelas.
+
+Aqui está um exemplo de uso da anotação `@Inheritance` com a estratégia Single Table Inheritance:
+
+```
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public class Pessoa {
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String nome;
+
+    // outros atributos, getters e setters
+}
+
+@Entity
+public class Cliente extends Pessoa {
+    private String endereco;
+
+    // outros atributos, getters e setters
+}
+
+@Entity
+public class Funcionario extends Pessoa {
+    private Double salario;
+
+    // outros atributos, getters e setters
+}
+```
+
+Neste exemplo, a classe `Pessoa` é a classe pai na hierarquia, e as classes `Cliente` e `Funcionario` são subclasses. A anotação `@Inheritance` é usada para 
+definir a estratégia de herança como Single Table Inheritance (`InheritanceType.SINGLE_TABLE`). Isso significa que todas as classes compartilham a mesma 
+tabela no banco de dados.
+
+Em resumo, a anotação `@Inheritance` é usada para definir a estratégia de herança a ser usada em hierarquias de classes quando essas classes são mapeadas 
+para tabelas no banco de dados. Ela permite escolher entre diferentes estratégias, como Single Table Inheritance ou Joined Table Inheritance, para 
+representar a herança no esquema do banco de dados.
