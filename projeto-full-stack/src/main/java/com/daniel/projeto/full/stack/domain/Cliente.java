@@ -45,6 +45,9 @@ public class Cliente implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "TELEFONE")
 	private Set<String> telefones = new HashSet<>();
+	
+	
+	private List<Pedido> pedidos = new ArrayList<Pedido>();
 
 	public Cliente() {
 
@@ -123,6 +126,14 @@ public class Cliente implements Serializable {
 
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
+	}
+	
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+	
+	public List<Pedido> getPedidos() {
+		return pedidos;
 	}
 
 	@Override
