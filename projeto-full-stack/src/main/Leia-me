@@ -440,3 +440,51 @@ Portanto, a variável itens é um conjunto que armazena objetos do tipo ItemPedi
 a duplicação de itens no conjunto. Isso é útil, por exemplo, quando você está trabalhando com uma lista de itens de pedido em um sistema de comércio 
 eletrônico, onde cada item de pedido deve ser único.
 
+---------- // ----------
+
+Anotação @EmbeddedId
+
+A anotação @EmbeddedId é uma anotação fornecida pelo framework JPA (Java Persistence API) que é usada para indicar que uma classe é usada como uma chave 
+primária composta (composite primary key) para uma entidade. Essa anotação é usada em conjunto com outra classe anotada com @Embeddable, que representa a 
+chave primária composta.
+
+Aqui estão os principais pontos para entender sobre a anotação @EmbeddedId:
+
+ 1. Chave primária composta: Em algumas situações, você pode ter uma entidade que requer uma chave primária composta, ou seja, uma chave primária que 
+    consiste em mais de um atributo. A anotação @EmbeddedId é usada para indicar que a classe usada como chave primária composta será embutida (embedded) 
+    na entidade.
+
+ 2. Uso de @Embeddable: A classe que é usada como chave primária composta deve ser anotada com @Embeddable. Essa classe encapsula os atributos que compõem 
+    a chave primária composta.
+
+ 3. Uso em atributos: A anotação @EmbeddedId é colocada em um atributo da entidade que representa a chave primária composta.
+ 
+Aqui está um exemplo simples qualquer de uso da anotação @EmbeddedId:
+
+```
+@Embeddable
+public class PedidoId implements Serializable {
+    private Long clienteId;
+    private Long numeroPedido;
+
+    // construtores, getters e setters
+}
+
+@Entity
+public class Pedido {
+    @EmbeddedId
+    private PedidoId id;
+
+    private String descricao;
+
+    // outros atributos, getters e setters
+}
+```
+Neste exemplo, a classe PedidoId é anotada com @Embeddable, indicando que ela é usada como parte da chave primária composta da classe Pedido. A classe 
+PedidoId encapsula dois atributos: clienteId e numeroPedido.
+
+A classe Pedido é uma entidade que usa a chave primária composta representada pela classe PedidoId. O atributo id na classe Pedido é anotado com 
+@EmbeddedId, indicando que ele contém a chave primária composta.
+
+Em resumo, a anotação @EmbeddedId é usada para indicar que uma classe é usada como chave primária composta embutida em uma entidade. Isso é útil quando 
+você precisa de uma chave primária composta que consiste em mais de um atributo.

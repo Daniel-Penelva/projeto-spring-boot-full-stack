@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -40,6 +41,7 @@ public class Pedido implements Serializable {
 	// Coleção que não permite duplicatas e o HashSet é uma implementação da
 	// interface Set que armazena os elementos de forma não ordenada e não permite
 	// elementos duplicados.
+	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemPedido> itens = new HashSet<ItemPedido>();
 
 	public Pedido() {

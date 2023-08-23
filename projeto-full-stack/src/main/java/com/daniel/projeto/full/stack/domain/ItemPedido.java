@@ -3,11 +3,16 @@ package com.daniel.projeto.full.stack.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+
+@Entity
 public class ItemPedido implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	// Esse id é composto referencia tanto o produto quanto o pedido
+	@EmbeddedId
 	private ItemPedidoPK id = new ItemPedidoPK();
 
 	private Double desconto;

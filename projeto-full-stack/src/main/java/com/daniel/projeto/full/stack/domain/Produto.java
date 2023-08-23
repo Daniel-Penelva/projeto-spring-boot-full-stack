@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -40,6 +41,7 @@ public class Produto implements Serializable {
 	
 	// Coleção que não permite duplicatas e o HashSet é uma implementação da interface
 	// Set que armazena os elementos de forma não ordenada e não permite elementos duplicados.
+	@OneToMany(mappedBy = "id.produto")
 	private Set<ItemPedido> itensPedido = new HashSet<ItemPedido>();
 	
 	
