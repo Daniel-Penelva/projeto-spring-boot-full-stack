@@ -6,12 +6,18 @@ import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class ItemPedido implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	// Esse id é composto referencia tanto o produto quanto o pedido
+	@JsonIgnore
 	@EmbeddedId
 	private ItemPedidoPK id = new ItemPedidoPK();
 
@@ -33,9 +39,11 @@ public class ItemPedido implements Serializable{
 	}
 	
 	// Criando o método getters do Pedido e do Produto para poder utilizá-lo fora da classe ItemPedido
+	@JsonIgnore
 	public Pedido getPedido() {
 		return id.getPedido();
 	}
+	
 	
 	public Produto getProduto() {
 		return id.getProduto();

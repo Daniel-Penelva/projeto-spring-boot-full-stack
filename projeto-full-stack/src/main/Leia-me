@@ -488,3 +488,76 @@ A classe Pedido é uma entidade que usa a chave primária composta representada 
 
 Em resumo, a anotação @EmbeddedId é usada para indicar que uma classe é usada como chave primária composta embutida em uma entidade. Isso é útil quando 
 você precisa de uma chave primária composta que consiste em mais de um atributo.
+
+----------------------------------------------------------------------------- // -----------------------------------------------------------------------------
+IMPORTANTE!!!
+
+Tratando a Serialização entre os mapeamentos:
+
+Vamos ter que tratar do mapeamento bidirecional do Pedido entre Cliente, Endereço, ItemPedido e Pagamento (PagamentoComBoleto e PagamentoComCartao). 
+ 
+ -> Entre Pedido e Cliente tem uma relação de associação de mão dupla, ou seja, na Classe Pedido vai permitir o cliente a ser serializado e na Classe Cliente  
+não vai ser permitido os pedidos a serem serializados. Contudo, vamos fazer um endpoint para o pedido onde vai ser mostrado o cliente. Portanto, na Classe
+Pedido vamos utilizar a anotação @JsonManagedReference no campo do tipo Cliente. E na Classe Cliente vamos utilizar a anotação @JsonBackReference 
+no campo do tipo Pedido.
+
+-> Entre Pedido e Endereço tem uma relação de mão única, ou seja, é unidirecional. Logo não precisamos tratar a serialização.
+
+-> Entre Pedido e Pagamento tem uma relação de associação de mão dupla, ou seja, Pedido tem que enxergar o Pagamento, mas o Pagamento não pode enxergar o 
+Pedido (ou seja, na classe Pedido vai ser permitido que o pagamento seja serializado, logo no campo 'pagamento' vamos utilizar a anotação @JsonManagedReference, 
+já na Classe Pagamento não vai ser permitido que o Pedido seja serializado, logo no campo 'pedido' vamos utilizar a anotação @JsonBackReference).
+
+-> Entre Pedido e ItemPedido existe uma chave composta (ItemPedidoPK id que seria o (pedido_id e produto_id)). A maneira de fazer aqui e não se preocupar 
+com dois níveis de acessos a objetos, ou seja, na Classe ItemPedido vamos fazer a anotação @JsonIgnore no campo 'id' do tipo ItemPedidoPK, ou seja, esse 
+campo não vai ser considerado durante o processo de serialização para JSON, logo ele não vai serializar nem o Produto e nem o Pedido. E também temos que 
+ignorar o método getPedido() para indicar que esse método não deve ser serializado ao gerar JSON. Já o método getProduto() não vamos ignorá-lo, porque 
+precisamos obter o objeto Produto associado a esse item de pedido para ser mostrado o produto.
+
+  . Porém, agora temos que permitir que o Pedido possa serializar o ItemPedido, portanto basta definir o mapeamento @OneToMany como já está definido na 
+    Classe Pedido no campo "itens" do tipo Set<ItemPedido>. 
+
+  .Já o produto leva a um questionamento: A partir de um produto que foi recuperado de um sistema eu vou querer serializar os itens de pedidos que estão 
+   associados a ele? Ou seja, a partir de um item de pedido saber quai(s) produto(s) está(ão) associado ao item ou a partir do produto
+   saber os itens que estão associados a ele? O importante saber é que a partir do item de pedidos eu tenho acesso ao produto, então vamos ignorar o campo 
+   'itens' do tipo 'Set<ItemPedido>' através da anotação @JsonIgnore. E também temos que ignorar o método getPedidos (lista de pedidos) uma vez que faz uso 
+   do getters.
+
+---------- // ----------
+
+Anotação `@JsonIgnore`
+
+A anotação `@JsonIgnore` é uma anotação fornecida pela biblioteca Jackson, que é amplamente usada para serialização e desserialização de objetos JSON em 
+Java. A anotação `@JsonIgnore` é usada para indicar que um campo ou método de uma classe não deve ser considerado durante o processo de serialização para 
+JSON.
+
+Aqui estão os principais pontos para entender sobre a anotação `@JsonIgnore`:
+
+1. **Exclusão da serialização**: Quando um campo ou método é anotado com `@JsonIgnore`, ele não será incluído no JSON gerado durante o processo de 
+   serialização. Isso é útil quando você não deseja que determinados campos sejam visíveis nos dados JSON resultantes.
+
+2. **Uso em campos e métodos**: A anotação pode ser colocada em campos ou em métodos (getter/setter) que representam propriedades da classe.
+
+3. **Evitando recursão infinita**: A anotação é frequentemente usada para evitar a recursão infinita em relacionamentos bidirecionais entre objetos, onde 
+   cada objeto referencia o outro. Ao marcar um lado da relação com `@JsonIgnore`, você evita que a serialização fique presa em um loop infinito.
+
+Aqui está um exemplo simples de uso da anotação `@JsonIgnore`:
+
+```
+public class Usuario {
+    private Long id;
+    private String nome;
+
+    @JsonIgnore
+    private String senha;
+
+    // getters e setters
+}
+```
+
+Neste exemplo, o campo `senha` foi anotado com `@JsonIgnore`, o que significa que o valor desse campo não será incluído quando o objeto `Usuario` for 
+serializado em JSON. Isso é comum em campos sensíveis que você não deseja expor no JSON resultante.
+
+Em resumo, a anotação `@JsonIgnore` é usada para indicar que um campo ou método de uma classe não deve ser considerado durante o processo de serialização 
+para JSON. Isso é útil para evitar a exposição de certos campos sensíveis ou para evitar recursão infinita em relacionamentos complexos durante a 
+serialização JSON.
+

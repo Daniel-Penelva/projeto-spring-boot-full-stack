@@ -10,7 +10,9 @@ import javax.persistence.ManyToOne;
 @Embeddable
 public class ItemPedidoPK implements Serializable{
 	
-	/* Essa Classe auxiliar identifica o item pedido e tem como referência o Produto e o Pedido. */
+	/* Essa Classe auxiliar identifica o item pedido e tem como referência o Produto e o Pedido. Vale ressaltar
+	 * que essa Classe representa a Chave composta (produto_id e pedido_id). Essa Classe é chamada pela a 
+	 * Classe ItemPedido através da declaração do tipo e a variável "ItemPedidoPK id". */
 	
 	private static final long serialVersionUID = 1L;
 	
